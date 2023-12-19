@@ -1,18 +1,15 @@
-<form>
-  <div class="input-group my-3">
-    <input type="text" class="form-control" [(ngModel)]="userName" (keyup.enter)="search()" placeholder="Search Users">
-    <button class="btn btn-outline-success" type="button" (click)="search()">Search</button>
-    <button class="btn btn-outline-info" type="button" (click)="createFavUser()">Add to Favorites</button>
-  </div>
-  <label for="favoriteUsers">Favorite Users:</label>
-  <div *ngFor="let user of favUsers" class="input-group mb-3 mr-auto" style="width: 300px;">
-    <select id="favoriteUsers" class="form-select" [(ngModel)]="userName">
-      <option [value]="user.userName">{{ user.userName }}</option>
-    </select>
-    <button class="btn btn-outline-danger" type="button" (click)="deleteFavUser(user)" *ngIf="user.id">Delete User</button>
-  </div>
-</form>
-
+<div class="input-group my-3">
+  <input type="text" class="form-control" [(ngModel)]="userName" (keyup.enter)="search()" placeholder="Search Users">
+  <button class="btn btn-outline-success" type="button" (click)="search()">Search</button>
+  <button class="btn btn-outline-info" type="button" (click)="addToFavorites()">Add to Favorites</button>
+</div>
+<label for="favoriteUsers">Favorite Users:</label>
+<div class="input-group mb-3 mr-auto" style="width: 300px;">
+  <select id="favoriteUsers" class="form-select" [(ngModel)]="userName">
+    <option *ngFor="let user of favoriteUsers" [value]="user">{{ user }}</option>
+  </select>
+  <button class="btn btn-outline-danger" type="button" (click)="removeFromFavorites(userName)">Delete User</button>
+</div>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-gundam" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Gundams</button>
@@ -29,9 +26,9 @@
           <div class="card-body">
             <h5 class="card-title">{{ gundam.name }}</h5>
             <p class="card-text">
-              <strong>Series:</strong> {{ gundam.series }}<br>
-              <strong>Grade:</strong> {{ gundam.grade }}<br>
-              <strong>Scale:</strong> {{ gundam.scale }}
+            <strong>Series:</strong> {{ gundam.series }}<br>
+            <strong>Grade:</strong> {{ gundam.grade }}<br>
+            <strong>Scale:</strong> {{ gundam.scale }}
             </p>
           </div>
         </div>

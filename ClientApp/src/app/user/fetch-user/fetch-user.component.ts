@@ -1,6 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { FavUser } from 'src/app/_models/favUser';
-import { FavUserService } from 'src/app/_services/fav-user.service';
+import { Component } from '@angular/core';
 
 import { Gundam } from 'src/app/_models/gundam';
 import { Backlog } from 'src/app/_models/backlog';
@@ -15,38 +13,32 @@ import { WishlistService } from 'src/app/_services/wishlist.service';
   templateUrl: './fetch-user.component.html'
 })
 export class FetchUserComponent {
-  @Input() favUser?: FavUser;
 
   userName: string = "";
-  favUsers: FavUser[] = [];
   gundams: Gundam[] = [];
   backlogs: Backlog[] = [];
   wishlist: WishList[] = [];
 
-  constructor(private gundamService: GundamService, private backlogService: BacklogService, private wishlistService: WishlistService, private favUserService: FavUserService) {}
-
-  ngOnInit() : void {
-    this.favUserService.getFavUser().subscribe((result: FavUser[]) => (this.favUsers = result));
-  }
-
-  createFavUser() {
-    let newFavUser: FavUser = { userName: this.userName };
-    this.favUserService.createFavUser(newFavUser).subscribe((result: FavUser[]) => {
-      this.favUsers = result;
-    });
-  }
-
-  deleteFavUser(favUser: FavUser) {
-    if (window.confirm('Mobile Suit Pilot, do you truly wish to annihilate this target?')) {
-      this.favUserService
-        .deleteFavUser(favUser)
-        .subscribe((favUsers: FavUser[]) => (this.favUsers = favUsers));
-    }
-  }
+  constructor(private gundamService: GundamService, private backlogService: BacklogService, private wishlistService: WishlistService) {}
 
   search() {
     this.gundamService.getUserGundam(this.userName).subscribe((result: Gundam[]) => (this.gundams = result));
     this.backlogService.getUserBacklog(this.userName).subscribe((result: Backlog[]) => (this.backlogs = result));
     this.wishlistService.getUserWishList(this.userName).subscribe((result: Gundam[]) => (this.wishlist = result));
+  }
+
+  favoriteUsers: string[] = [];
+
+  addToFavorites() {
+    if (this.userName && !this.favoriteUsers.includes(this.userName)) {
+      this.favoriteUsers.push(this.userName);
+    }
+  }
+
+  removeFromFavorites(user: string) {
+    const index = this.favoriteUsers.indexOf(user);
+    if (index !== -1) {
+      this.favoriteUsers.splice(index, 1);
+    }
   }
 }
