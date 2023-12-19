@@ -36,12 +36,15 @@ namespace MomoMecha.Controllers
         public async Task<ActionResult<List<FavoriteUser>>> Post(FavoriteUser favoriteUser)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(userId);
+            var existingFavoriteUser = await _context.FavoriteUsers
+                .FirstOrDefaultAsync(a => a.ApplicationUser.Id == userId && a.UserName == favoriteUser.UserName);
 
-            if (_context.FavoriteUsers.Any(u => u.ApplicationUser.UserName == user.UserName))
+            if (existingFavoriteUser != null)
             {
-                return BadRequest("Duplicate username not allowed.");
+                return Conflict("Username is already in favorites.");
             }
+
+            var user = await _userManager.FindByIdAsync(userId);
 
             favoriteUser.ApplicationUser = user;
             _context.FavoriteUsers.Add(favoriteUser);

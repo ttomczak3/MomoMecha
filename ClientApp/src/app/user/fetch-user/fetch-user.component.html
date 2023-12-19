@@ -1,14 +1,14 @@
 <div class="input-group my-3">
   <input type="text" class="form-control" [(ngModel)]="userName" (keyup.enter)="search()" placeholder="Search Users">
   <button class="btn btn-outline-success" type="button" (click)="search()">Search</button>
-  <button class="btn btn-outline-info" type="button" (click)="addToFavorites()">Add to Favorites</button>
+  <button class="btn btn-outline-info" type="button" (click)="createFavUser()">Add to Favorites</button>
 </div>
 <label for="favoriteUsers">Favorite Users:</label>
 <div class="input-group mb-3 mr-auto" style="width: 300px;">
-  <select id="favoriteUsers" class="form-select" [(ngModel)]="userName">
-    <option *ngFor="let user of favoriteUsers" [value]="user">{{ user }}</option>
+  <select id="favoriteUsers" class="form-select" [(ngModel)]="selectedFavUserName">
+    <option *ngFor="let user of favUsers" [value]="user.userName" (click)="searchSelected()">{{ user.userName }}</option>
   </select>
-  <button class="btn btn-outline-danger" type="button" (click)="removeFromFavorites(userName)">Delete User</button>
+  <button class="btn btn-outline-danger" type="button" (click)="deleteFavUser()">Delete User</button>
 </div>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
