@@ -41,7 +41,7 @@
                 <select asp-for="Backlog.Scale"
                         asp-items="Model.ScaleItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
-                    <option disabled selected value="">Select a Series</option>
+                    <option disabled selected value="">Select a Scale</option>
                 </select>
                 <span asp-validation-for="Backlog.Scale" class="text-danger"></span>
             </div>
