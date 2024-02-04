@@ -11,6 +11,8 @@ namespace MomoMecha.Data
         {
         }
 
+        public DbSet<Gundam> Gundams { get; set; }
         public DbSet<Backlog> Backlogs { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; }
     }
 }

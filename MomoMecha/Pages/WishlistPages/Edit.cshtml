@@ -1,0 +1,62 @@
+﻿@page
+@model MomoMecha.Pages.WishlistPages.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Wishlist</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Wishlist.Id" />
+            <div class="form-group">
+                <label asp-for="Wishlist.Name" class="control-label"></label>
+                <input asp-for="Wishlist.Name" class="form-control" />
+                <span asp-validation-for="Wishlist.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Wishlist.Series" class="control-label"></label>
+                <select asp-for="Wishlist.Series"
+                        asp-items="Model.SeriesItems.Select(item => new SelectListItem(item, item))"
+                        class="form-control">
+                    <option disabled selected value="">Select a Series</option>
+                </select>
+                <span asp-validation-for="Wishlist.Series" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Wishlist.Grade" class="control-label"></label>
+                <select asp-for="Wishlist.Grade"
+                        asp-items="Model.GradeItems.Select(item => new SelectListItem(item, item))"
+                        class="form-control">
+                    <option disabled selected value="">Select a Grade</option>
+                </select>
+                <span asp-validation-for="Wishlist.Grade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Wishlist.Scale" class="control-label"></label>
+                <select asp-for="Wishlist.Scale"
+                        asp-items="Model.ScaleItems.Select(item => new SelectListItem(item, item))"
+                        class="form-control">
+                    <option disabled selected value="">Select a Scale</option>
+                </select>
+                <span asp-validation-for="Wishlist.Scale" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
