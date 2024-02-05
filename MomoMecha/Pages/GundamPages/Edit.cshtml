@@ -1,5 +1,5 @@
 ﻿@page
-@model MomoMecha.Pages.BacklogPages.EditModel
+@model MomoMecha.Pages.GundamPages.EditModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,44 +7,49 @@
 
 <h1>Edit</h1>
 
-<h4>Backlog</h4>
+<h4>Gundam</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Backlog.Id" />
+            <input type="hidden" asp-for="Gundam.Id" />
             <div class="form-group">
-                <label asp-for="Backlog.Name" class="control-label"></label>
-                <input asp-for="Backlog.Name" class="form-control" />
-                <span asp-validation-for="Backlog.Name" class="text-danger"></span>
+                <label asp-for="Gundam.Name" class="control-label"></label>
+                <input asp-for="Gundam.Name" class="form-control" />
+                <span asp-validation-for="Gundam.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Backlog.Series" class="control-label"></label>
-                <select asp-for="Backlog.Series"
+                <label asp-for="Gundam.Series" class="control-label"></label>
+                <select asp-for="Gundam.Series"
                         asp-items="Model.SeriesItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
                     <option disabled selected value="">Select a Series</option>
                 </select>
-                <span asp-validation-for="Backlog.Series" class="text-danger"></span>
+                <span asp-validation-for="Gundam.Series" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Backlog.Grade" class="control-label"></label>
-                <select asp-for="Backlog.Grade"
+                <label asp-for="Gundam.Grade" class="control-label"></label>
+                <select asp-for="Gundam.Grade"
                         asp-items="Model.GradeItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
                     <option disabled selected value="">Select a Grade</option>
                 </select>
-                <span asp-validation-for="Backlog.Grade" class="text-danger"></span>
+                <span asp-validation-for="Gundam.Grade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Backlog.Scale" class="control-label"></label>
-                <select asp-for="Backlog.Scale"
+                <label asp-for="Gundam.Scale" class="control-label"></label>
+                <select asp-for="Gundam.Scale"
                         asp-items="Model.ScaleItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
                     <option disabled selected value="">Select a Scale</option>
                 </select>
-                <span asp-validation-for="Backlog.Scale" class="text-danger"></span>
+                <span asp-validation-for="Gundam.Scale" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="Gundam.ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />

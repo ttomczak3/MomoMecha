@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MomoMecha.Data;
 using MomoMecha.Models;
 
-namespace MomoMecha.Pages.BacklogPages
+namespace MomoMecha.Pages.GundamPages
 {
-    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly MomoMecha.Data.ApplicationDbContext _context;
@@ -22,11 +20,11 @@ namespace MomoMecha.Pages.BacklogPages
             _context = context;
         }
 
-        public IList<Backlog> Backlog { get;set; } = default!;
+        public IList<Gundam> Gundam { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Backlog = await _context.Backlogs
+            Gundam = await _context.Gundams
                 .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
                 .ToListAsync();
         }

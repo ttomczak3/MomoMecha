@@ -1,0 +1,66 @@
+﻿@page
+@model MomoMecha.Pages.GundamPages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Gundam</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Gundam.Name" class="control-label"></label>
+                <input asp-for="Gundam.Name" class="form-control" />
+                <span asp-validation-for="Gundam.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gundam.Series" class="control-label"></label>
+                <select asp-for="Gundam.Series"
+                        asp-items="Model.SeriesItems.Select(item => new SelectListItem(item, item))"
+                        class="form-control">
+                    <option disabled selected value="">Select a Series</option>
+                </select>
+                <span asp-validation-for="Gundam.Series" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gundam.Grade" class="control-label"></label>
+                <select asp-for="Gundam.Grade"
+                        asp-items="Model.GradeItems.Select(item => new SelectListItem(item, item))"
+                        class="form-control">
+                    <option disabled selected value="">Select a Grade</option>
+                </select>
+                <span asp-validation-for="Gundam.Grade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gundam.Scale" class="control-label"></label>
+                <select asp-for="Gundam.Scale"
+                        asp-items="Model.ScaleItems.Select(item => new SelectListItem(item, item))"
+                        class="form-control">
+                    <option disabled selected value="">Select a Scale</option>
+                </select>
+                <span asp-validation-for="Gundam.Scale" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

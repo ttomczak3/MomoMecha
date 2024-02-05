@@ -1,0 +1,32 @@
+﻿@page
+@model MomoMecha.Pages.GundamPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Built Gundams</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+<div class="row mt-3">
+    @foreach (var item in Model.Gundam)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                    <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top" alt="Gundam Image">
+                <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    <p class="card-text">
+                        <strong>Series:</strong> @Html.DisplayFor(modelItem => item.Series)<br>
+                        <strong>Grade:</strong> @Html.DisplayFor(modelItem => item.Grade)<br>
+                        <strong>Scale:</strong> @Html.DisplayFor(modelItem => item.Scale)
+                    </p>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
