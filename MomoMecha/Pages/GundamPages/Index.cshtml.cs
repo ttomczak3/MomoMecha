@@ -22,11 +22,20 @@ namespace MomoMecha.Pages.GundamPages
 
         public IList<Gundam> Gundam { get;set; } = default!;
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
+
         public async Task OnGetAsync()
         {
-            Gundam = await _context.Gundams
-                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
-                .ToListAsync();
+            var query = _context.Gundams
+                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                query = query.Where(s => s.Name.Contains(SearchString));
+            }
+
+            Gundam = await query.ToListAsync();
         }
     }
 }

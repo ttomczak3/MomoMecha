@@ -22,11 +22,20 @@ namespace MomoMecha.Pages.WishlistPages
 
         public IList<Wishlist> Wishlist { get;set; } = default!;
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
+
         public async Task OnGetAsync()
         {
-            Wishlist = await _context.Wishlist
-                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
-                .ToListAsync();
+            var query = _context.Wishlist
+                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                query = query.Where(s => s.Name.Contains(SearchString));
+            }
+
+            Wishlist = await query.ToListAsync();
         }
     }
 }
