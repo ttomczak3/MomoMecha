@@ -20,10 +20,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Sales</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/SearchUsers">Search</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Gundam Sales</a>
+                        </li>
+                        <li class="nav-item">
+                            <form class="form-inline" method="get" asp-page="/SearchUsers">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="SearchString" placeholder="Search for Users" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

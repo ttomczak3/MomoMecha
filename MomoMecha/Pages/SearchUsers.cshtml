@@ -1,0 +1,137 @@
+﻿@page
+@model MomoMecha.Pages.SearchUsersModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>@Model.SearchedUsername</h1>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-gundam" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Gundams</button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-backlog" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Backlog</button>
+        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-wishlist" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Wish List</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-gundam" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+        <div class="row mt-3">
+            @if (Model.GundamSearchResult != null)
+            {
+                @foreach (var item in Model.GundamSearchResult)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <img src="@item.ImageUrl" class="card-img-top" alt="Gundam Image">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">
+                                    <strong>Series:</strong> @item.Series<br>
+                                    <strong>Grade:</strong> @item.Grade<br>
+                                    <strong>Scale:</strong> @item.Scale
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Pilot Not in Cockpit - No Gundam pilot detected; please enter valid credentials or confirm the existence of the designated mobile suit operator.</p>
+            }
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-backlog" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+        @if (Model.BacklogSearchResult != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BacklogSearchResult[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BacklogSearchResult[0].Series)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BacklogSearchResult[0].Grade)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BacklogSearchResult[0].Scale)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.BacklogSearchResult)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Series)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Grade)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Scale)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="mt-3">Pilot Not in Cockpit - No Gundam pilot detected; please enter valid credentials or confirm the existence of the designated mobile suit operator.</p>
+        }
+    </div>
+    <div class="tab-pane fade" id="nav-wishlist" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+        @if (Model.WishlistSearchResult != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WishlistSearchResult[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WishlistSearchResult[0].Series)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WishlistSearchResult[0].Grade)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WishlistSearchResult[0].Scale)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.WishlistSearchResult)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Series)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Grade)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Scale)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="mt-3">Pilot Not in Cockpit - No Gundam pilot detected; please enter valid credentials or confirm the existence of the designated mobile suit operator.</p>
+        }
+    </div>
+</div>
