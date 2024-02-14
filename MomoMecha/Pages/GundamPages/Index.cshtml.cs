@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.GundamService;
 
 namespace MomoMecha.Pages.GundamPages
 {
     public class IndexModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IGundam _gundamService;
 
-        public IndexModel(MomoMecha.Data.ApplicationDbContext context)
+        public IndexModel(IGundam gundamService)
         {
-            _context = context;
+            _gundamService = gundamService;
         }
 
         public IList<Gundam> Gundam { get;set; } = default!;
@@ -27,15 +22,8 @@ namespace MomoMecha.Pages.GundamPages
 
         public async Task OnGetAsync()
         {
-            var query = _context.Gundams
-                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            if (!string.IsNullOrEmpty(SearchString))
-            {
-                query = query.Where(s => s.Name.Contains(SearchString));
-            }
-
-            Gundam = await query.ToListAsync();
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Gundam = await _gundamService.GetGundamsAsync(userId, SearchString);
         }
     }
 }

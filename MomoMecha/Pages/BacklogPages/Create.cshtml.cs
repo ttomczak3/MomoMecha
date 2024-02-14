@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.BacklogService;
 
 namespace MomoMecha.Pages.BacklogPages
 {
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IBacklog _backlogService;
 
-        public CreateModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CreateModel(IBacklog backlogService)
         {
-            _context = context;
-            _userManager = userManager;
+            _backlogService = backlogService;
         }
 
         public IActionResult OnGet()
@@ -73,12 +65,8 @@ namespace MomoMecha.Pages.BacklogPages
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(userId);
 
-            Backlog.ApplicationUser = user;
-
-            _context.Backlogs.Add(Backlog);
-            await _context.SaveChangesAsync();
+            await _backlogService.AddBacklogAsync(Backlog, userId);
 
             return RedirectToPage("./Index");
         }

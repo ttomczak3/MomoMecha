@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.WishlistService;
 
 namespace MomoMecha.Pages.WishlistPages
 {
     public class DeleteModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IWishlist _wishlistService;
 
-        public DeleteModel(MomoMecha.Data.ApplicationDbContext context)
+        public DeleteModel(IWishlist wishlistService)
         {
-            _context = context;
+            _wishlistService = wishlistService;
         }
 
         [BindProperty]
@@ -29,7 +24,7 @@ namespace MomoMecha.Pages.WishlistPages
                 return NotFound();
             }
 
-            var wishlist = await _context.Wishlist.FirstOrDefaultAsync(m => m.Id == id);
+            var wishlist = await _wishlistService.GetWishlistByIdAsync(id.Value);
 
             if (wishlist == null)
             {
@@ -49,13 +44,7 @@ namespace MomoMecha.Pages.WishlistPages
                 return NotFound();
             }
 
-            var wishlist = await _context.Wishlist.FindAsync(id);
-            if (wishlist != null)
-            {
-                Wishlist = wishlist;
-                _context.Wishlist.Remove(Wishlist);
-                await _context.SaveChangesAsync();
-            }
+            await _wishlistService.DeleteWishlistAsync(id.Value);
 
             return RedirectToPage("./Index");
         }

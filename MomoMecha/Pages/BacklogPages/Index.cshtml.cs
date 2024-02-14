@@ -1,44 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.BacklogService;
 
 namespace MomoMecha.Pages.BacklogPages
 {
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IBacklog _backlogService;
 
-        public IndexModel(MomoMecha.Data.ApplicationDbContext context)
+        public IndexModel(IBacklog backlogService)
         {
-            _context = context;
+            _backlogService = backlogService;
         }
 
-        public IList<Backlog> Backlog { get;set; } = default!;
+        public IList<Backlog> Backlog { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
         public async Task OnGetAsync()
         {
-            var query = _context.Backlogs
-                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            if (!string.IsNullOrEmpty(SearchString))
-            {
-                query = query.Where(s => s.Name.Contains(SearchString));
-            }
-
-            Backlog = await query.ToListAsync();
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Backlog = await _backlogService.GetBacklogsAsync(userId, SearchString);
         }
-
     }
 }

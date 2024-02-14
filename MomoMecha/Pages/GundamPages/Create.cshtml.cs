@@ -1,29 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using MomoMecha.Data;
 using MomoMecha.Models;
 using MomoMecha.Services;
+using MomoMecha.Services.GundamService;
 
 namespace MomoMecha.Pages.GundamPages
 {
     public class CreateModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGundam _gundamService;
         private readonly PhotoService _photoService;
 
-        public CreateModel(MomoMecha.Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager, PhotoService photoService)
+        public CreateModel(IGundam gundamService, PhotoService photoService)
         {
-            _context = context;
-            _userManager = userManager;
+            _gundamService = gundamService;
             _photoService = photoService;
         }
 
@@ -80,14 +71,8 @@ namespace MomoMecha.Pages.GundamPages
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            var result = await _photoService.AddPhotoAsync(ImageFile);
 
-            Gundam.ApplicationUser = user;
-            Gundam.ImageUrl = result.Url.ToString();
-
-            _context.Gundams.Add(Gundam);
-            await _context.SaveChangesAsync();
+            await _gundamService.AddGundamAsync(Gundam, userId, ImageFile);
 
             return RedirectToPage("./Index");
         }

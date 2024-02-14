@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.WishlistService;
 
 namespace MomoMecha.Pages.WishlistPages
 {
     public class EditModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IWishlist _wishlistService;
 
-        public EditModel(MomoMecha.Data.ApplicationDbContext context)
+        public EditModel(IWishlist wishlistService)
         {
-            _context = context;
+            _wishlistService = wishlistService;
         }
 
         [BindProperty]
@@ -64,17 +59,16 @@ namespace MomoMecha.Pages.WishlistPages
                 return NotFound();
             }
 
-            var wishlist =  await _context.Wishlist.FirstOrDefaultAsync(m => m.Id == id);
+            var wishlist = await _wishlistService.GetWishlistByIdAsync(id.Value);
             if (wishlist == null)
             {
                 return NotFound();
             }
+
             Wishlist = wishlist;
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -82,15 +76,13 @@ namespace MomoMecha.Pages.WishlistPages
                 return Page();
             }
 
-            _context.Attach(Wishlist).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _wishlistService.UpdateWishlistAsync(Wishlist);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WishlistExists(Wishlist.Id))
+                if (!_wishlistService.WishlistExists(Wishlist.Id))
                 {
                     return NotFound();
                 }
@@ -101,11 +93,6 @@ namespace MomoMecha.Pages.WishlistPages
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool WishlistExists(int id)
-        {
-            return _context.Wishlist.Any(e => e.Id == id);
         }
     }
 }

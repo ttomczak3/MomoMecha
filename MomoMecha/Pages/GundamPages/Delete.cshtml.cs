@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
 using MomoMecha.Services;
+using MomoMecha.Services.GundamService;
 
 namespace MomoMecha.Pages.GundamPages
 {
     public class DeleteModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IGundam _gundamService;
         private readonly PhotoService _photoService;
 
-        public DeleteModel(MomoMecha.Data.ApplicationDbContext context, PhotoService photoService)
+        public DeleteModel(IGundam gundamService, PhotoService photoService)
         {
-            _context = context;
+            _gundamService = gundamService;
             _photoService = photoService;
         }
 
@@ -32,16 +27,13 @@ namespace MomoMecha.Pages.GundamPages
                 return NotFound();
             }
 
-            var gundam = await _context.Gundams.FirstOrDefaultAsync(m => m.Id == id);
-
+            var gundam = await _gundamService.GetGundamByIdAsync(id.Value);
             if (gundam == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Gundam = gundam;
-            }
+
+            Gundam = gundam;
             return Page();
         }
 
@@ -52,16 +44,7 @@ namespace MomoMecha.Pages.GundamPages
                 return NotFound();
             }
 
-            var gundam = await _context.Gundams.FindAsync(id);
-            var imageUrl = gundam.ImageUrl;
-
-            if (gundam != null)
-            {
-                Gundam = gundam;
-                _ = _photoService.DeletePhotoAsync(imageUrl);
-                _context.Gundams.Remove(Gundam);
-                await _context.SaveChangesAsync();
-            }
+            await _gundamService.DeleteGundamAsync(id.Value);
 
             return RedirectToPage("./Index");
         }

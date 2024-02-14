@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.WishlistService;
 
 namespace MomoMecha.Pages.WishlistPages
 {
     public class CreateModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWishlist _wishlistService;
 
-        public CreateModel(MomoMecha.Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CreateModel(IWishlist wishlistService)
         {
-            _context = context;
-            _userManager = userManager;
+            _wishlistService = wishlistService;
         }
 
         public IActionResult OnGet()
@@ -73,12 +65,8 @@ namespace MomoMecha.Pages.WishlistPages
             }
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(userId);
 
-            Wishlist.ApplicationUser = user;
-
-            _context.Wishlist.Add(Wishlist);
-            await _context.SaveChangesAsync();
+            await _wishlistService.AddWishlistAsync(Wishlist, userId);
 
             return RedirectToPage("./Index");
         }

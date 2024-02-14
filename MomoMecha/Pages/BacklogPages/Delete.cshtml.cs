@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.BacklogService;
 
 namespace MomoMecha.Pages.BacklogPages
 {
     public class DeleteModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IBacklog _backlogService;
 
-        public DeleteModel(MomoMecha.Data.ApplicationDbContext context)
+        public DeleteModel(IBacklog backlogService)
         {
-            _context = context;
+            _backlogService = backlogService;
         }
 
         [BindProperty]
@@ -29,7 +24,7 @@ namespace MomoMecha.Pages.BacklogPages
                 return NotFound();
             }
 
-            var backlog = await _context.Backlogs.FirstOrDefaultAsync(m => m.Id == id);
+            var backlog = await _backlogService.GetBacklogByIdAsync(id.Value);
 
             if (backlog == null)
             {
@@ -49,13 +44,7 @@ namespace MomoMecha.Pages.BacklogPages
                 return NotFound();
             }
 
-            var backlog = await _context.Backlogs.FindAsync(id);
-            if (backlog != null)
-            {
-                Backlog = backlog;
-                _context.Backlogs.Remove(Backlog);
-                await _context.SaveChangesAsync();
-            }
+            await _backlogService.DeleteBacklogAsync(id.Value);
 
             return RedirectToPage("./Index");
         }

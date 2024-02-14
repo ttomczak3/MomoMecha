@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
 using MomoMecha.Services;
+using MomoMecha.Services.GundamService;
 
 namespace MomoMecha.Pages.GundamPages
 {
     public class EditModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IGundam _gundamService;
         private readonly PhotoService _photoService;
 
-        public EditModel(MomoMecha.Data.ApplicationDbContext context, PhotoService photoService)
+        public EditModel(IGundam gundamService, PhotoService photoService)
         {
-            _context = context;
+            _gundamService = gundamService;
             _photoService = photoService;
         }
 
@@ -28,22 +23,6 @@ namespace MomoMecha.Pages.GundamPages
 
         [BindProperty]
         public IFormFile ImageFile { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var gundam =  await _context.Gundams.FirstOrDefaultAsync(m => m.Id == id);
-            if (gundam == null)
-            {
-                return NotFound();
-            }
-            Gundam = gundam;
-            return Page();
-        }
 
         public string[] SeriesItems { get; } = [
             "Universal Century",
@@ -79,6 +58,23 @@ namespace MomoMecha.Pages.GundamPages
             "1/48"
         ];
 
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var gundam = await _gundamService.GetGundamByIdAsync(id.Value);
+            if (gundam == null)
+            {
+                return NotFound();
+            }
+
+            Gundam = gundam;
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -86,17 +82,13 @@ namespace MomoMecha.Pages.GundamPages
                 return Page();
             }
 
-            _context.Attach(Gundam).State = EntityState.Modified;
-            var result = await _photoService.AddPhotoAsync(ImageFile);
-
             try
             {
-                Gundam.ImageUrl = result.Url.ToString();
-                await _context.SaveChangesAsync();
+                await _gundamService.UpdateGundamAsync(Gundam, ImageFile);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GundamExists(Gundam.Id))
+                if (!_gundamService.GundamExists(Gundam.Id))
                 {
                     return NotFound();
                 }
@@ -107,11 +99,6 @@ namespace MomoMecha.Pages.GundamPages
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool GundamExists(int id)
-        {
-            return _context.Gundams.Any(e => e.Id == id);
         }
     }
 }

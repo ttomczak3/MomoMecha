@@ -1,41 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.WishlistService;
 
 namespace MomoMecha.Pages.WishlistPages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly MomoMecha.Data.ApplicationDbContext _context;
+        private readonly IWishlist _wishlistService;
 
-        public IndexModel(MomoMecha.Data.ApplicationDbContext context)
+        public IndexModel(IWishlist wishlistService)
         {
-            _context = context;
+            _wishlistService = wishlistService;
         }
 
-        public IList<Wishlist> Wishlist { get;set; } = default!;
+        public IList<Wishlist> Wishlist { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
         public async Task OnGetAsync()
         {
-            var query = _context.Wishlist
-                .Where(a => a.ApplicationUser.Id == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            if (!string.IsNullOrEmpty(SearchString))
-            {
-                query = query.Where(s => s.Name.Contains(SearchString));
-            }
-
-            Wishlist = await query.ToListAsync();
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Wishlist = await _wishlistService.GetWishlistAsync(userId, SearchString);
         }
     }
 }
