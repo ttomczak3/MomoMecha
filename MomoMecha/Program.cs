@@ -1,9 +1,12 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MomoMecha.Data;
 using MomoMecha.Helpers;
 using MomoMecha.Models;
 using MomoMecha.Services;
+using MomoMecha.Services.BacklogService;
+using MomoMecha.Services.GundamService;
+using MomoMecha.Services.SaleService;
+using MomoMecha.Services.WishlistService;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -28,6 +31,11 @@ services.AddAuthentication().AddGoogle(googleOptions =>
 builder.Services.AddScoped<PhotoService>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
+services.AddScoped<IGundam, GundamService>();
+services.AddScoped<IBacklog, BacklogService>();
+services.AddScoped<IWishlist, WishlistService>();
+services.AddScoped<ISale, SaleService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,7 +45,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error");
+    //app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

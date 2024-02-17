@@ -1,22 +1,23 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MomoMecha.Data;
 using MomoMecha.Models;
+using MomoMecha.Services.SaleService;
 
 namespace MomoMecha.Pages
 {
     public class SaleModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISale _saleService;
 
-        public SaleModel(ApplicationDbContext context)
+        public SaleModel(ISale saleService)
         {
-            _context = context;
+            _saleService = saleService;
         }
+
         public List<Sale> Sale { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Sale = [.. _context.Sale];
+            Sale = await _saleService.GetSalesAsync();
         }
     }
 }
