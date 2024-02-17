@@ -29,6 +29,13 @@ namespace MomoMecha.Services.BacklogService
             return await query.ToListAsync();
         }
 
+        public async Task<List<Backlog>> GetUserBacklogsAsync(string username)
+        {
+            return await _context.Backlogs
+                .Where(g => g.ApplicationUser.UserName == username)
+                .ToListAsync();
+        }
+
         public async Task AddBacklogAsync(Backlog backlog, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

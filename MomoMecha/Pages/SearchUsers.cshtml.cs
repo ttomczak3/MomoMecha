@@ -1,41 +1,32 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MomoMecha.Data;
 using MomoMecha.Models;
-using System.Linq.Expressions;
+using MomoMecha.Services.BacklogService;
+using MomoMecha.Services.GundamService;
+using MomoMecha.Services.WishlistService;
 
 namespace MomoMecha.Pages
 {
     public class SearchUsersModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IGundam _gundamService;
+        private readonly IBacklog _backlogService;
+        private readonly IWishlist _wishlistService;
 
-        public SearchUsersModel(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public SearchUsersModel(UserManager<ApplicationUser> userManager, IGundam gundamService, IBacklog backlog, IWishlist wishlist)
         {
-            _context = context;
             _userManager = userManager;
+            _gundamService = gundamService;
+            _backlogService = backlog;
+            _wishlistService = wishlist;
         }
 
         public string SearchedUsername { get; set; }
         public List<Gundam> GundamSearchResult { get; set; }
         public List<Backlog> BacklogSearchResult { get; set; }
         public List<Wishlist> WishlistSearchResult { get; set; }
-
-        private async Task<List<T>> GetUserItems<T>(Expression<Func<T, bool>> predicate) where T : class
-        {
-            if (!string.IsNullOrEmpty(SearchedUsername))
-            {
-                return await _context.Set<T>()
-                    .Where(predicate)
-                    .ToListAsync()
-                    .ConfigureAwait(false);
-            }
-
-            return [];
-        }
 
         public async Task<IActionResult> OnGetAsync(string SearchString)
         {
@@ -47,9 +38,9 @@ namespace MomoMecha.Pages
                 {
                     SearchedUsername = user.UserName;
 
-                    GundamSearchResult = await GetUserItems<Gundam>(g => g.ApplicationUser.UserName == user.UserName);
-                    BacklogSearchResult = await GetUserItems<Backlog>(g => g.ApplicationUser.UserName == user.UserName);
-                    WishlistSearchResult = await GetUserItems<Wishlist>(g => g.ApplicationUser.UserName == user.UserName);
+                    GundamSearchResult = await _gundamService.GetUserGundamsAsync(user.UserName);
+                    BacklogSearchResult = await _backlogService.GetUserBacklogsAsync(user.UserName);
+                    WishlistSearchResult = await _wishlistService.GetUserWishlistsAsync(user.UserName);
                 }
             }
 

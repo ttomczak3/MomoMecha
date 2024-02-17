@@ -31,6 +31,13 @@ namespace MomoMecha.Services.GundamService
             return await query.ToListAsync();
         }
 
+        public async Task<List<Gundam>> GetUserGundamsAsync(string username)
+        {
+            return await _context.Gundams
+                .Where(g => g.ApplicationUser.UserName == username)
+                .ToListAsync();
+        }
+
         public async Task AddGundamAsync(Gundam gundam, string userId, IFormFile ImageFile)
         {
             var user = await _userManager.FindByIdAsync(userId);

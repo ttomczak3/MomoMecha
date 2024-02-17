@@ -29,6 +29,13 @@ namespace MomoMecha.Services.WishlistService
             return await query.ToListAsync();
         }
 
+        public async Task<List<Wishlist>> GetUserWishlistsAsync(string username)
+        {
+            return await _context.Wishlist
+                .Where(g => g.ApplicationUser.UserName == username)
+                .ToListAsync();
+        }
+
         public async Task AddWishlistAsync(Wishlist wishlist, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
