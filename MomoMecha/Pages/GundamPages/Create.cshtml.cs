@@ -67,6 +67,7 @@ namespace MomoMecha.Pages.GundamPages
         {
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError("ImageFile", "Image is required");
                 return Page();
             }
 

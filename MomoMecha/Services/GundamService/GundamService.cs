@@ -58,8 +58,15 @@ namespace MomoMecha.Services.GundamService
         public async Task UpdateGundamAsync(Gundam gundam, IFormFile ImageFile)
         {
             _context.Attach(gundam).State = EntityState.Modified;
-            var result = await _photoService.AddPhotoAsync(ImageFile);
-            gundam.ImageUrl = result.Url.ToString();
+            if (ImageFile != null)
+            {
+                var result = await _photoService.AddPhotoAsync(ImageFile);
+                var imageUrl = gundam.ImageUrl;
+
+                _ = _photoService.DeletePhotoAsync(imageUrl);
+                gundam.ImageUrl = result.Url.ToString();
+            }
+
             await _context.SaveChangesAsync();
         }
 

@@ -48,8 +48,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="Gundam.ImageUrl" class="form-control" readonly hidden />
                 <input asp-for="ImageFile" type="file" class="form-control" />
-                <span asp-validation-for="Gundam.ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-success" />
