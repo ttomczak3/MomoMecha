@@ -26,8 +26,8 @@
                         <strong>Grade:</strong> @Html.DisplayFor(modelItem => item.Grade)<br>
                         <strong>Scale:</strong> @Html.DisplayFor(modelItem => item.Scale)
                     </p>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-secondary bi bi-pencil-square"></a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger bi bi-x-lg"></a>
                 </div>
             </div>
         </div>

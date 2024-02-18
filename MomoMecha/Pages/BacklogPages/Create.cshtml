@@ -14,12 +14,12 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Backlog.Name" class="control-label"></label>
+                <label asp-for="Backlog.Name" class="control-label">Name *</label>
                 <input asp-for="Backlog.Name" class="form-control" />
                 <span asp-validation-for="Backlog.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Backlog.Series" class="control-label"></label>
+                <label asp-for="Backlog.Series" class="control-label">Series *</label>
                 <select asp-for="Backlog.Series"
                         asp-items="Model.SeriesItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
@@ -28,7 +28,7 @@
                 <span asp-validation-for="Backlog.Series" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Backlog.Grade" class="control-label"></label>
+                <label asp-for="Backlog.Grade" class="control-label">Grade *</label>
                 <select asp-for="Backlog.Grade"
                         asp-items="Model.GradeItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
@@ -37,7 +37,7 @@
                 <span asp-validation-for="Backlog.Grade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Backlog.Scale" class="control-label"></label>
+                <label asp-for="Backlog.Scale" class="control-label">Scale *</label>
                 <select asp-for="Backlog.Scale"
                         asp-items="Model.ScaleItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">

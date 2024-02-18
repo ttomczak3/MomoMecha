@@ -14,12 +14,12 @@
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Gundam.Name" class="control-label"></label>
+                <label asp-for="Gundam.Name" class="control-label">Name *</label>
                 <input asp-for="Gundam.Name" class="form-control" />
                 <span asp-validation-for="Gundam.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gundam.Series" class="control-label"></label>
+                <label asp-for="Gundam.Series" class="control-label">Series *</label>
                 <select asp-for="Gundam.Series"
                         asp-items="Model.SeriesItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
@@ -28,7 +28,7 @@
                 <span asp-validation-for="Gundam.Series" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gundam.Grade" class="control-label"></label>
+                <label asp-for="Gundam.Grade" class="control-label">Grade *</label>
                 <select asp-for="Gundam.Grade"
                         asp-items="Model.GradeItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
@@ -37,7 +37,7 @@
                 <span asp-validation-for="Gundam.Grade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gundam.Scale" class="control-label"></label>
+                <label asp-for="Gundam.Scale" class="control-label">Scale *</label>
                 <select asp-for="Gundam.Scale"
                         asp-items="Model.ScaleItems.Select(item => new SelectListItem(item, item))"
                         class="form-control">
@@ -46,7 +46,7 @@
                 <span asp-validation-for="Gundam.Scale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
+                <label asp-for="ImageFile" class="control-label">Image File *</label>
                 <input asp-for="ImageFile" type="file" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
