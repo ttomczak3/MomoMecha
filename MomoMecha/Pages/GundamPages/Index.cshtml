@@ -27,10 +27,10 @@
     @foreach (var item in Model.Gundam)
     {
         <div class="col-md-4">
-            <div class="card border-primary mb-3">
-                    <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top" alt="Gundam Image">
+            <div class="card border-primary mb-3 h-100">
+                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top" alt="Gundam Image">
                 <div class="card-body">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                     <p class="card-text">
                         <strong>Series:</strong> @Html.DisplayFor(modelItem => item.Series)<br>
                         <strong>Grade:</strong> @Html.DisplayFor(modelItem => item.Grade)<br>
