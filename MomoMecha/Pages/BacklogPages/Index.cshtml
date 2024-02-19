@@ -2,7 +2,7 @@
 @model MomoMecha.Pages.BacklogPages.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Backlog";
 }
 
 <h1>Welcome Pilot, to your Gundam armory</h1>
@@ -67,7 +67,7 @@
 
 <script>
     document.getElementById('copyLink').addEventListener('click', function () {
-        var linkToCopy = "https://localhost:7292/SearchUsers?SearchString=@Html.Raw(Uri.EscapeDataString(Model.UserName))";
+        var linkToCopy = "https://momomecha.azurewebsites.net/SearchUsers?SearchString=@Html.Raw(Uri.EscapeDataString(Model.UserName))";
 
         var tempInput = document.createElement('input');
         tempInput.value = linkToCopy;
