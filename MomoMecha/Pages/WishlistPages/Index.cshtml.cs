@@ -22,10 +22,13 @@ namespace MomoMecha.Pages.WishlistPages
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
+        public string UserName { get; set; } = default!;
+
         public async Task OnGetAsync()
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             Wishlist = await _wishlistService.GetWishlistAsync(userId, SearchString);
+            UserName = HttpContext.User.FindFirst(ClaimTypes.Name).Value;
         }
     }
 }

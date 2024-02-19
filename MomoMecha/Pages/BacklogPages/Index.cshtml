@@ -8,9 +8,18 @@
 <h1>Welcome Pilot, to your Gundam armory</h1>
 <h4>Backlog</h4>
 
-<p>
+<div class="mb-3">
     <a asp-page="Create" class="btn btn-secondary">Create New</a>
-</p>
+    <a href="#" id="copyLink" class="btn btn-primary bi bi-clipboard"></a>
+    <div id="copyToast" class="toast position-fixed bottom-0 end-0 mx-auto" style="z-index: 12; margin-bottom: 5rem;" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong>Copied to Clipboard</strong>
+        </div>
+        <div class="toast-body">
+            User link has been copied to clipboard.
+        </div>
+    </div>
+</div>
 <form>
     <input type="text" name="SearchString" placeholder="Search for Gundam" class="form-control">
 </form>
@@ -55,3 +64,20 @@
 }
     </tbody>
 </table>
+
+<script>
+    document.getElementById('copyLink').addEventListener('click', function () {
+        var linkToCopy = "https://localhost:7292/SearchUsers?SearchString=@Html.Raw(Uri.EscapeDataString(Model.UserName))";
+
+        var tempInput = document.createElement('input');
+        tempInput.value = linkToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        // Show Bootstrap toast
+        var copyToast = new bootstrap.Toast(document.getElementById('copyToast'));
+        copyToast.show();
+    });
+</script>
