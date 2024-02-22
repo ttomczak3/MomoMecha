@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/MomoMecha.styles.css" asp-append-version="true" />
     <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Exo 2' rel='stylesheet'>
 </head>
 <body>
     <header>
@@ -25,7 +26,7 @@
                             <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Sale">Gundam Sales</a>
+                            <a class="nav-link" asp-area="" asp-page="/Sale">Gundam sales</a>
                         </li>
                         <li class="nav-item">
                             <form class="form-inline" method="get" asp-page="/SearchUsers">
@@ -49,11 +50,17 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - MomoMecha - <a asp-area="" asp-page="/Privacy">Privacy</a> - <a asp-area="" asp-page="/Terms">Terms of Service</a> - <a href="https://github.com/ttomczak3/MomoMecha" target="_blank" class="text-body">GitHub</a>
-        </div>
-    </footer>
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom">
+                <li class="nav-item"><a asp-area="" asp-page="/Privacy" class="nav-link px-2 text-body-secondary" style="font-size: 14px;">Privacy</a></li>
+                <li class="nav-item"><a asp-area="" asp-page="/Terms" class="nav-link px-2 text-body-secondary" style="font-size: 14px;">Terms of Service</a></li>
+                <li class="nav-item"><a href="https://github.com/ttomczak3/MomoMecha" target="_blank" class="nav-link px-2 text-body-secondary" style="font-size: 14px;">GitHub</a></li>
+            </ul>
+            <hr />
+            <p class="text-center text-body-secondary" style="font-size: 14px;">&copy; 2024 MomoMecha</p>
+        </footer>
+    </div>
 
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
     <script>
